@@ -17,12 +17,12 @@ public class Target : MonoBehaviour
 
     // partol
     public Vector3 walkPoint;
-    bool walkPointSet;
+    public bool walkPointSet;
     public float Chase;
 
     //attacks
     public timedAttacks;
-    bool alreadyAttacking;
+    public bool alreadyAttacking;
 
     //states 
     public float sightRange, attackingRange;
