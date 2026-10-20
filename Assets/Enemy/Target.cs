@@ -10,6 +10,15 @@ using UnityEngine.AI;
 public class Target : MonoBehaviour
 {
 
+    public float MaxHealth = 20f;
+    private float CurrentHealth;
+    //[SerializeField] public AudioClip damageSoundC;
+    //
+    //  [SerializeField] public AudioClip deathSoundC;
+
+    public bool HasTakenDamage { get; set; }
+
+
     public Transform player;
     public NavMeshAgent agent;
     public GameObject Projectile;
@@ -33,10 +42,10 @@ public class Target : MonoBehaviour
 
     private void Awake()
     {
-        player = GameObject.Find("playerObj").transform;
-        agent = GetComponent<NavMeshAgent>();
+        //player = GameObject.Find("playerObj").transform;
+        //agent = GetComponent<NavMeshAgent>();
     }
-    private void Patroling()
+   /* private void Patroling()
     {
         if (!isBetweenRange) SearchWalkPoint();
 
@@ -55,7 +64,7 @@ public class Target : MonoBehaviour
         float randomX = Random.Range(-walkPointSet, walkPointSet);
 
         walkPoint = new Vector3(transform.position.x + randomX + transform.position.y, transform.position.z + randomZ);
-        if (Physics.Raycast(walkPoint, -transform.up, 2f, whatIsGround)) ;
+        if (Physics.Raycast(walkPoint, -transform.up, 2f, whatIsGround));
         
     }
     private void chase()
@@ -86,7 +95,7 @@ public class Target : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        CurrentHealth = MaxHealth;
     }
 
     // Update is called once per frame
@@ -106,7 +115,7 @@ public class Target : MonoBehaviour
         if (!playerInSight && !playerInAttackingRange) Patroling();
         if (playerInSight && !playerInAttackingRange) chase();
         if (playerInSight && playerInAttackingRange) Attacking();
-    }
+    }*/
     public void TakeDamage(float amount)
     {
         health -= amount;
@@ -119,6 +128,28 @@ public class Target : MonoBehaviour
 
     void Die()
     {
+  
         Destroy(gameObject);
+    }
+    public void takeDamage(float amount)
+    {
+        HasTakenDamage = true;
+        CurrentHealth -= amount;
+
+
+        CurrentHealth -= amount;
+        //Debug(CurrentHealth);
+        if (CurrentHealth <= 0f)
+        {
+            Die();
+            
+        }
+    }
+    private void Update()
+    {
+        if (transform.position.y <= -20)
+        {
+            Destroy(gameObject);
+        }
     }
 }
