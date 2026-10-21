@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,13 +11,14 @@ public class NewEnemyAI : MonoBehaviour
     NavMeshAgent agent;
     public GameObject Projectile;
     public float health;
-    public enum agentAction { sprint, superJump, Reach, proj}
+    public enum agentAction { sprint, superJump, Reach, proj }
     public Vector3 walkPoint;
     bool startPos;
     public float startPosDis;
 
 
-    public float InSight, InAttack;
+    public float InSight = 20f;
+    public float InAttack = 15f;
     public bool AttackRange, SightRange;
     public float AttackCD;
     bool HasAttacked;
@@ -35,7 +37,7 @@ public class NewEnemyAI : MonoBehaviour
     {
         SightRange = Physics.CheckSphere(transform.position, InSight, whatIsPlayer);
         AttackRange = Physics.CheckSphere(transform.position, InAttack, whatIsPlayer);
-        
+
         if (!SightRange && !AttackRange) Patrolling();
         if (SightRange && !AttackRange) Chase();
         if (SightRange && AttackRange) Attacking();
@@ -52,12 +54,12 @@ public class NewEnemyAI : MonoBehaviour
     {
         if (!startPos) SerchStartPos();
 
-        if(startPos)
+        if (startPos)
             agent.SetDestination(walkPoint);
 
         Vector3 DisToSPos = transform.position - walkPoint;
 
-        if(DisToSPos.magnitude < 1f)
+        if (DisToSPos.magnitude < 1f)
             startPos = false;
     }
     private void Chase()
@@ -66,16 +68,16 @@ public class NewEnemyAI : MonoBehaviour
     }
     private void SerchStartPos()
     {
-        float randomZ = Random.Range(-startPosDis, startPosDis);
-        float randomX = Random.Range(-startPosDis, startPosDis);
+        float randomZ = UnityEngine.Random.Range(-startPosDis, startPosDis);
+        float randomX = UnityEngine.Random.Range(-startPosDis, startPosDis);
 
         walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
 
         if (Physics.Raycast(walkPoint, -transform.up, 2f, whatIsGround))
 
             startPos = true;
-   
-        
+
+
     }
 
 
