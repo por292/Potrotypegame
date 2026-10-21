@@ -8,7 +8,9 @@ public class PlayerController : MonoBehaviour
 	private CharacterInput controls; // Our controls we defined
     private Vector3 velocity; // To hold our current velocity
     private Vector2 move; // To hold our move
-    
+
+    public float PHealth = 100f;
+
 
     private CharacterController controller; // Character controller
 
@@ -23,13 +25,20 @@ public class PlayerController : MonoBehaviour
     public float distanceToGround = 0.4f; // How close the ground needs to be to register
     public LayerMask groundMask; // What layer is ground?
 
+
     public float dashSpeed = 20f;
     public float dashDuration = 0.2f;
     private bool isDashing = false;
     private Vector3 dashDirection;
     private Vector3 dashStartPosition;
     private float dashTimeElapsed;
-    public float playerSlide;
+    public float maxDashDistance;
+
+    [SerializeField] private PlayerGunSelect GunSelect;
+
+    public float damage = 5f;
+    public float range = 100f;
+    public Camera fpsCam;
 
     void Awake()
     {
@@ -39,11 +48,12 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        Shoot();
 		PlayerMovement();
 		Grav();
 		Jump();
-        //Dashing();
-        //TriggerAction();
+        Dashing();
+        TriggerAction();
         if (controls.Player.Dash.IsPressed())
         {
             StartDash();
@@ -53,8 +63,24 @@ public class PlayerController : MonoBehaviour
         {
             Dashing();
         }
+        
     }
 
+    private void Shoot()
+    {
+        RaycastHit hit;
+        if (Mouse.current.leftButton.isPressed && GunSelect.ActiveGun != null)
+        {
+            Target enemy = transform.GetComponent<Target>();
+            if(enemy != null)
+            {
+                //enemy.takeDamage(damage);
+            }
+            GunSelect.ActiveGun.shoot();
+            Debug.Log("shooting");
+            Debug.DrawRay(fpsCam.transform.position, fpsCam.transform.forward * range, Color.red, 1f);
+        }
+    }
     private void Grav()
     {
 		if (isGrounded() && velocity.y < 0){
@@ -95,8 +121,8 @@ public class PlayerController : MonoBehaviour
     {
         if (controls.Player.Dash.IsPressed())
         { 
-         //TriggerAction();
-         //StartDash();
+         TriggerAction();
+         StartDash();
          transform.position += dashDirection * dashSpeed * Time.deltaTime;
          dashTimeElapsed += Time.deltaTime;
          float distanceTraveled = Vector3.Distance(dashStartPosition, transform.position);
@@ -109,7 +135,7 @@ public class PlayerController : MonoBehaviour
 
     private void PlayerMovement()
     {
-        if (controls.Player.Sprint.IsPressed()) 
+        if (controls.Player.Sprint. IsPressed()) 
         {
             Vector3 Sprint = (move.x * transform.right) + (move.y * transform.forward);                 
             controller.Move(Sprint * sprintSpeed * Time.deltaTime);
@@ -120,7 +146,7 @@ public class PlayerController : MonoBehaviour
             Vector3 movement = (move.y * transform.forward) + (move.x * transform.right);
             controller.Move(movement * moveSpeed * Time.deltaTime);
         }
-        Dashing();
+        
     }
 
     private void Jump()
@@ -152,8 +178,5 @@ public class PlayerController : MonoBehaviour
        yield return new WaitForSeconds(CDT);
        canTrigger = true; // Flip the boolean flag (true becomes false, false becomes true)
    }
-    void slide()
-    {
 
-    }
 }
