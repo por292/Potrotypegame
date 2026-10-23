@@ -7,7 +7,9 @@ public class EnemySpawning : MonoBehaviour
     public int numEnemies = 10;
     public GameObject prefab;
     public Transform playerTransform;
-    public float spawnRadius = 20f;
+    public float spawnRadius = 200;
+    public int xPos;
+    public int zPos;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,15 +29,18 @@ public class EnemySpawning : MonoBehaviour
     }
     void makeAChild()
     {
+        
         Vector3 centerPosition = playerTransform != null ? playerTransform.position : Vector3.zero;
-        float childX = centerPosition.x + Random.Range(-spawnRadius, spawnRadius);
-        float childZ = centerPosition.z + Random.Range(-spawnRadius, spawnRadius);
+        float childX = centerPosition.x + Random.Range(0, spawnRadius);
+        float childZ = centerPosition.z + Random.Range(0, spawnRadius);
         Vector3 spawnPosition = new Vector3(childX, 10f, childZ);
         GameObject newChild = Instantiate(prefab, spawnPosition, Quaternion.identity);
         newChild.transform.SetParent(transform);
-       /* if ()
-        {
-            Destroy(gameObject);
-        }*/
+        
+    }
+
+    void SpawnOnPlat()
+    {
+
     }
 }
