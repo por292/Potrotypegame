@@ -48,7 +48,11 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        Shoot();
+        if (controls.Player.Shoot.triggered)
+        {
+            Shoot();
+        }
+        
 		PlayerMovement();
 		Grav();
 		Jump();
@@ -66,7 +70,7 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    private void Shoot()
+    /*private void Shoot()
     {
         RaycastHit hit;
         if (Mouse.current.leftButton.isPressed && GunSelect.ActiveGun != null)
@@ -80,8 +84,36 @@ public class PlayerController : MonoBehaviour
             Debug.Log("shooting");
             Debug.DrawRay(fpsCam.transform.position, fpsCam.transform.forward * range, Color.red, 1f);
         }
+    }*/
+    void Shoot()
+    {
+        RaycastHit hit;
+        if (Mouse.current.leftButton.isPressed && GunSelect.ActiveGun != null)
+        {
+            GunSelect.ActiveGun.shoot();
+            Debug.Log("shooting");
+            Debug.DrawRay(fpsCam.transform.position, fpsCam.transform.forward * range, Color.green, 1f);
+            if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
+            {
+                Debug.Log(hit.transform.name);
+                Target enemy = hit.transform.GetComponent<Target>();
+
+                if (enemy != null)
+                {
+                    enemy.TakeDamage(damage);
+                }
+
+            }
+            else
+            {
+                Debug.DrawRay(fpsCam.transform.position, fpsCam.transform.forward * hit.distance, Color.green, 1f);
+            }
+             Debug.DrawRay(fpsCam.transform.position, fpsCam.transform.forward * range, Color.green, 1f);
+        }
     }
-    private void Grav()
+
+
+private void Grav()
     {
 		if (isGrounded() && velocity.y < 0){
 			velocity.y = -2f;
