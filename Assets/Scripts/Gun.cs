@@ -4,11 +4,12 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 public class Gun : MonoBehaviour
 {
-    private CharacterInput controls;
+   private CharacterInput controls;
 
     public float damage = 10f;
     public float range = 100f;
     public Camera fpsCam;
+    [SerializeField] private PlayerGunSelect GunSelect;
 
 
     private void Awake()
@@ -26,7 +27,7 @@ public class Gun : MonoBehaviour
     {
         if (controls.Player.Shoot.triggered)
         {
-            Shoot();
+            //Shoot();
         }
         
     }
@@ -38,24 +39,30 @@ public class Gun : MonoBehaviour
     {
         controls.Disable();
     }
-    void Shoot()
+    /*void Shoot()
     {
         RaycastHit hit;
-       
-        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
+        if (Mouse.current.leftButton.isPressed && GunSelect.ActiveGun != null)
         {
-            Debug.Log(hit.transform.name);
-            Target enemy = hit.transform.GetComponent<Target>();
-
-            if (enemy != null)
+            GunSelect.ActiveGun.shoot();
+            Debug.Log("shooting");
+            Debug.DrawRay(fpsCam.transform.position, fpsCam.transform.forward * range, Color.green, 1f);
+            if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
             {
-                enemy.TakeDamage(damage);
-            }   
+                Debug.Log(hit.transform.name);
+                Target enemy = hit.transform.GetComponent<Target>();
+
+                if (enemy != null)
+                {
+                    enemy.TakeDamage(damage);
+                }
+
+            }
+            else
+            {
+                //Debug.DrawRay(fpsCam.transform.position, fpsCam.transform.forward * hit.distance, Color.green, 1f);
+            }
+           // Debug.DrawRay(fpsCam.transform.position, fpsCam.transform.forward * range, Color.green, 1f);
         }
-        else
-        {
-            Debug.DrawRay(fpsCam.transform.position, fpsCam.transform.forward * hit.distance, Color.green, 1f);
-        }
-        Debug.DrawRay(fpsCam.transform.position, fpsCam.transform.forward * range, Color.green, 1f);
-    }
+    }*/
 }
