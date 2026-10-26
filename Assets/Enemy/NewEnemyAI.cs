@@ -14,20 +14,24 @@ public class NewEnemyAI : MonoBehaviour
     public enum agentAction { sprint, superJump, Reach, proj }
     public Vector3 walkPoint;
     bool startPos;
-    public float startPosDis;
+    public float startPosDis = 10f;
 
 
     public float InSight = 20f;
     public float InAttack = 15f;
     public bool AttackRange, SightRange;
-    public float AttackCD;
+    public float AttackCD = 1f;
     bool HasAttacked;
+    public LayerMask whatIsPlayer;
 
-    public LayerMask whatIsPlayer, whatIsGround;
+    public LayerMask whatIsGround;
     // Start is called before the first frame update
     void Start()
     {
-        agentAction values = 0;
+
+        whatIsPlayer = LayerMask.GetMask("Player");
+        whatIsGround = LayerMask.GetMask("Ground");
+       
 
         int randAgentAction = UnityEngine.Random.Range(0, 4);
     }
