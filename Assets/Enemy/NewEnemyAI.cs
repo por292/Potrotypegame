@@ -9,7 +9,7 @@ public class NewEnemyAI : MonoBehaviour
 {
     Transform Player;
     NavMeshAgent agent;
-    public GameObject Projectile;
+    //public GameObject Projectile;
     public float health;
     public enum agentAction { sprint, superJump, Reach, proj }
     public Vector3 walkPoint;
@@ -28,6 +28,11 @@ public class NewEnemyAI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 2.0f, NavMesh.AllAreas))
+        {
+            transform.position = hit.position;
+            agent.Warp(hit.position); // Safely places the agent
+        }
 
         whatIsPlayer = LayerMask.GetMask("Player");
         whatIsGround = LayerMask.GetMask("Ground");
@@ -93,12 +98,12 @@ public class NewEnemyAI : MonoBehaviour
         if (!HasAttacked)
         {
 
-            Rigidbody rb = Instantiate(Projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
+           /* Rigidbody rb = Instantiate(Projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
             rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
             rb.AddForce(transform.up * 8f, ForceMode.Impulse);
 
             HasAttacked = true;
-            Invoke(nameof(AttackAgain), AttackCD);
+            Invoke(nameof(AttackAgain), AttackCD);*/
         }
 
 
