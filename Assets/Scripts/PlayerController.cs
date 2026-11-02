@@ -9,41 +9,51 @@ public class PlayerController : MonoBehaviour
     private Vector3 velocity; // To hold our current velocity
     private Vector2 move; // To hold our move
 
+    [Header("Health Settings")]
     public float PHealth = 100f;
-
+    private float currentHealth;
+    private bool isDead = false;
+    public Animator animator;
 
     private CharacterController controller; // Character controller
 
-    public float moveSpeed = 6f; // To calibrate our movement
-    public float jumpHeight = 2.4f; // To calibrate our jump
-    public float gravity = -9.81f; // To calibrate our gravity
-    public float sprintSpeed = 10f;
-    public float dashing = 10f;
+    [Header("Movement")]
+    private float moveSpeed = 6f; // To calibrate our movement
+    private float jumpHeight = 2.4f; // To calibrate our jump
+    private float gravity = -9.81f; // To calibrate our gravity
+    private float sprintSpeed = 10f;
+
+    [Header("Dashing")]
+    private float dashing = 10f;
     [SerializeField] private float CDT = 2f;
-    public bool canTrigger = true;
-    public Transform ground; // Ground check empty goes in here
-    public float distanceToGround = 0.4f; // How close the ground needs to be to register
-    public LayerMask groundMask; // What layer is ground?
+    private bool canTrigger = true;
+    private Transform ground; // Ground check empty goes in here
+    private float distanceToGround = 0.4f; // How close the ground needs to be to register
+    private LayerMask groundMask; // What layer is ground?
 
 
-    public float dashSpeed = 20f;
-    public float dashDuration = 0.2f;
+    private float dashSpeed = 20f;
+    private float dashDuration = 0.2f;
     private bool isDashing = false;
     private Vector3 dashDirection;
     private Vector3 dashStartPosition;
     private float dashTimeElapsed;
-    public float maxDashDistance;
+    private float maxDashDistance;
 
     [SerializeField] private PlayerGunSelect GunSelect;
 
-    public float damage = 5f;
-    public float range = 100f;
+    private float damage = 5f;
+    private float range = 100f;
     public Camera fpsCam;
 
     void Awake()
     {
 		controls = new CharacterInput();
 		controller = GetComponent<CharacterController>();
+    }
+    private void Start()
+    {
+        currentHealth = PHealth;
     }
 
     void Update()
@@ -69,22 +79,25 @@ public class PlayerController : MonoBehaviour
         }
         
     }
-
-    /*private void Shoot()
+    public void TakeDamage(int damage)
     {
-        RaycastHit hit;
-        if (Mouse.current.leftButton.isPressed && GunSelect.ActiveGun != null)
+        PHealth -= damage;
+        if (PHealth <= 0) Die();
+    }
+    private void Die()
+    {
+        isDead = true;
+
+        if (TryGetComponent<PlayerController>(out PlayerController movement))
         {
-            Target enemy = transform.GetComponent<Target>();
-            if(enemy != null)
-            {
-                //enemy.takeDamage(damage);
-            }
-            GunSelect.ActiveGun.shoot();
-            Debug.Log("shooting");
-            Debug.DrawRay(fpsCam.transform.position, fpsCam.transform.forward * range, Color.red, 1f);
+            movement.enabled = false;
         }
-    }*/
+        if (animator != null)
+        {
+            animator.SetTrigger("isDead");
+        }
+        Invoke("RestartLevel", 2f);
+    }
     void Shoot()
     {
         RaycastHit hit;
