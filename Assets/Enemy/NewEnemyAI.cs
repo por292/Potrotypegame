@@ -10,19 +10,19 @@ public class NewEnemyAI : MonoBehaviour
     Transform Player;
     NavMeshAgent agent;
     //public GameObject Projectile;
-    public float health;
-    public enum agentAction { sprint, superJump, Reach, proj }
-    public Vector3 walkPoint;
+    public float health = 50f;
+    private enum agentAction { sprint, superJump, Reach, proj }
+    private Vector3 walkPoint;
     bool startPos;
-    public float startPosDis = 10f;
+    private float startPosDis = 10f;
 
 
     public float InSight = 20f;
     public float InAttack = 15f;
-    public bool AttackRange, SightRange;
+    private bool AttackRange, SightRange;
     public float AttackCD = 1f;
     bool HasAttacked;
-    public LayerMask whatIsPlayer;
+    private LayerMask whatIsPlayer;
 
     public LayerMask whatIsGround;
     // Start is called before the first frame update
@@ -134,7 +134,7 @@ public class NewEnemyAI : MonoBehaviour
     }
 
 
-    public void randAction(agentAction action, string targetObject)
+    /*public void randAction(agentAction action, string targetObject)
     {
         switch (action)
         {
@@ -142,5 +142,5 @@ public class NewEnemyAI : MonoBehaviour
                 break;
                 // Handle other custom commands
         }
-    }
+    }*/
 }
