@@ -8,12 +8,16 @@ public class PlayerController : MonoBehaviour
 	private CharacterInput controls; // Our controls we defined
     private Vector3 velocity; // To hold our current velocity
     private Vector2 move; // To hold our move
+    public Transform ground; // Ground check empty goes in here
+    private float distanceToGround = 0.4f; // How close the ground needs to be to register
+    public LayerMask groundMask; // What layer is ground?
 
     [Header("Health Settings")]
     public float PHealth = 100f;
     private float currentHealth;
     private bool isDead = false;
-    public Animator animator;
+    private Animator animator;
+
 
     private CharacterController controller; // Character controller
 
@@ -27,9 +31,7 @@ public class PlayerController : MonoBehaviour
     private float dashing = 10f;
     [SerializeField] private float CDT = 2f;
     private bool canTrigger = true;
-    private Transform ground; // Ground check empty goes in here
-    private float distanceToGround = 0.4f; // How close the ground needs to be to register
-    private LayerMask groundMask; // What layer is ground?
+    
 
 
     private float dashSpeed = 20f;
@@ -126,7 +128,7 @@ public class PlayerController : MonoBehaviour
     }
 
 
-private void Grav()
+    private void Grav()
     {
 		if (isGrounded() && velocity.y < 0){
 			velocity.y = -2f;
@@ -134,6 +136,13 @@ private void Grav()
 		
 		velocity.y += gravity * Time.deltaTime;
 		controller.Move(velocity * Time.deltaTime);
+    }
+    private void Jump()
+    {
+        if (controls.Player.Jump.triggered && isGrounded())
+        {
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
     }
 
     private bool isGrounded()
@@ -192,13 +201,6 @@ private void Grav()
             controller.Move(movement * moveSpeed * Time.deltaTime);
         }
         
-    }
-
-    private void Jump()
-    {
-		if (controls.Player.Jump.triggered && isGrounded()){
-			velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-		}
     }
 
     void OnEnable()
