@@ -36,7 +36,7 @@ public class NewEnemyAI : MonoBehaviour
 
         whatIsPlayer = LayerMask.GetMask("Player");
         whatIsGround = LayerMask.GetMask("Ground");
-       
+
 
         int randAgentAction = UnityEngine.Random.Range(0, 4);
     }
@@ -98,12 +98,12 @@ public class NewEnemyAI : MonoBehaviour
         if (!HasAttacked)
         {
 
-           /* Rigidbody rb = Instantiate(Projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
-            rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
-            rb.AddForce(transform.up * 8f, ForceMode.Impulse);
+            /* Rigidbody rb = Instantiate(Projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
+             rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
+             rb.AddForce(transform.up * 8f, ForceMode.Impulse);
 
-            HasAttacked = true;
-            Invoke(nameof(AttackAgain), AttackCD);*/
+             HasAttacked = true;
+             Invoke(nameof(AttackAgain), AttackCD);*/
         }
 
 
