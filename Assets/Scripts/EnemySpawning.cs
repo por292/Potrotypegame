@@ -56,11 +56,7 @@ public class EnemySpawning : MonoBehaviour
 
         if (UnityEngine.AI.NavMesh.SamplePosition(spawnPosition, out hit, 20f, UnityEngine.AI.NavMesh.AllAreas))
         {
-            GameObject newChild = Instantiate(
-                prefab,
-                hit.position,
-                Quaternion.identity
-            );
+            GameObject newChild = Instantiate(prefab, hit.position, Quaternion.identity);
 
             newChild.transform.SetParent(transform);
         }
