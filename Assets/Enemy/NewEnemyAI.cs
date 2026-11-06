@@ -16,6 +16,7 @@ public class NewEnemyAI : MonoBehaviour
     private Vector3 walkPoint;
     bool startPos;
     private float startPosDis = 10f;
+    public int damage = 10;
 
 
     public float InSight = 20f;
@@ -61,7 +62,19 @@ public class NewEnemyAI : MonoBehaviour
     }
     public void Patrolling()
     {
-        if (!startPos) SerchStartPos();
+        //if (!startPos) SerchStartPos();
+
+        //if (startPos)
+        //    agent.SetDestination(walkPoint);
+
+        //Vector3 DisToSPos = transform.position - walkPoint;
+
+        //if (DisToSPos.magnitude < 1f)
+        //    startPos = false;
+        if (agent == null || !agent.isActiveAndEnabled || !agent.isOnNavMesh) return;
+
+        if (!startPos)
+            SerchStartPos();
 
         if (startPos)
             agent.SetDestination(walkPoint);
@@ -73,7 +86,10 @@ public class NewEnemyAI : MonoBehaviour
     }
     private void Chase()
     {
-        agent.SetDestination(Player.position);
+        if (agent != null && agent.isActiveAndEnabled && agent.isOnNavMesh)
+        {
+            agent.SetDestination(Player.position);
+        }
     }
     private void SerchStartPos()
     {
@@ -89,10 +105,18 @@ public class NewEnemyAI : MonoBehaviour
 
     }
 
+    //private void OnTriggerEnter(Collider col)
+    //{
+    //    if (col.CompareTag("Player")) // Check if the collider belongs to the player
+    //    {
+    //        col.SendMessageUpwards("TakeDamage", damage); // Call the TakeDamage method on the player
+    //    }
+    //}
+
 
     public void Attacking()
     {
-       
+
     }
     private void AttackAgain()
     {
