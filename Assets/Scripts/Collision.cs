@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Collision : MonoBehaviour
 {
+    PlayerController PHealth;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,5 +18,9 @@ public class Collision : MonoBehaviour
         {
             
         }
+    }
+    public void TakeDamage(int damage)
+    {
+      PHealth.TakeDamage(damage);
     }
 }
