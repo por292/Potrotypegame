@@ -18,7 +18,6 @@ public class PlayerController : MonoBehaviour
     private bool isDead = false;
     private Animator animator;
 
-
     private CharacterController controller; // Character controller
 
     [Header("Movement")]
@@ -85,7 +84,8 @@ public class PlayerController : MonoBehaviour
     {
         PHealth -= damage;
         if (PHealth <= 0) Die();
-    }
+    }   
+
     private void Die()
     {
         isDead = true;
