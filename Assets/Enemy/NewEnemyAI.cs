@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 //using UnityEngine.Random;
 using UnityEngine.AI;
+[RequireComponent(typeof(NavMeshAgent))]
 
 public class NewEnemyAI : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class NewEnemyAI : MonoBehaviour
 
 
     public float InSight = 20f;
-    public float InAttack = 15f;
+    public float InAttack = 1.5f;
     private bool AttackRange, SightRange;
     public float AttackCD = 1f;
     bool HasAttacked;
@@ -28,6 +29,7 @@ public class NewEnemyAI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 2.0f, NavMesh.AllAreas))
         {
             transform.position = hit.position;
@@ -37,8 +39,6 @@ public class NewEnemyAI : MonoBehaviour
         whatIsPlayer = LayerMask.GetMask("Player");
         whatIsGround = LayerMask.GetMask("Ground");
 
-
-        int randAgentAction = UnityEngine.Random.Range(0, 4);
     }
 
     // Update is called once per frame
@@ -92,22 +92,7 @@ public class NewEnemyAI : MonoBehaviour
 
     public void Attacking()
     {
-        agent.SetDestination(Player.position);
-
-        transform.LookAt(Player);
-        if (!HasAttacked)
-        {
-
-            /* Rigidbody rb = Instantiate(Projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
-             rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
-             rb.AddForce(transform.up * 8f, ForceMode.Impulse);
-
-             HasAttacked = true;
-             Invoke(nameof(AttackAgain), AttackCD);*/
-        }
-
-
-
+       
     }
     private void AttackAgain()
     {
