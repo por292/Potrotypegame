@@ -18,13 +18,12 @@ public class EnemySpawning : MonoBehaviour
             makeAChild();
         }
     }
-    
-  
+
+
 
     // Update is called once per frame
     void Update()
     {
-
         if (transform.childCount < numEnemies)
         {
             makeAChild();
@@ -32,22 +31,13 @@ public class EnemySpawning : MonoBehaviour
     }
     void makeAChild()
     {
-
-        //Vector3 centerPosition = playerTransform != null ? playerTransform.position : Vector3.zero;
-        //float childX = centerPosition.x + UnityEngine.Random.Range(0, spawnRadius);
-        //float childZ = centerPosition.z + UnityEngine.Random.Range(0, spawnRadius);
-        //Vector3 spawnPosition = new Vector3(childX, 10f, childZ);
-        //GameObject newChild = Instantiate(prefab, spawnPosition, Quaternion.identity);
-        //newChild.transform.SetParent(transform);
         if (prefab == null)
         {
             UnityEngine.Debug.LogError("Enemy prefab is missing!");
             return;
         }
 
-        Vector3 centerPosition = playerTransform != null
-            ? playerTransform.position
-            : Vector3.zero;
+        Vector3 centerPosition = playerTransform != null ? playerTransform.position : Vector3.zero;
         float childX = centerPosition.x + UnityEngine.Random.Range(-spawnRadius, spawnRadius);
         float childZ = centerPosition.z + UnityEngine.Random.Range(-spawnRadius, spawnRadius);
 
@@ -57,7 +47,6 @@ public class EnemySpawning : MonoBehaviour
         if (UnityEngine.AI.NavMesh.SamplePosition(spawnPosition, out hit, 20f, UnityEngine.AI.NavMesh.AllAreas))
         {
             GameObject newChild = Instantiate(prefab, hit.position, Quaternion.identity);
-
             newChild.transform.SetParent(transform);
         }
         else
