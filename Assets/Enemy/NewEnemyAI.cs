@@ -20,7 +20,7 @@ public class NewEnemyAI : MonoBehaviour
 
 
     public float InSight = 20f;
-    public float InAttack = 1.5f;
+    public float InAttack = 3f;
     private bool AttackRange, SightRange;
     public float AttackCD = 1f;
     bool HasAttacked;
@@ -45,6 +45,7 @@ public class NewEnemyAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        OnCollisionTrigger();
         SightRange = Physics.CheckSphere(transform.position, InSight, whatIsPlayer);
         AttackRange = Physics.CheckSphere(transform.position, InAttack, whatIsPlayer);
 
@@ -105,13 +106,13 @@ public class NewEnemyAI : MonoBehaviour
 
     }
 
-    //private void OnTriggerEnter(Collider col)
-    //{
-    //    if (col.CompareTag("Player")) // Check if the collider belongs to the player
-    //    {
-    //        col.SendMessageUpwards("TakeDamage", damage); // Call the TakeDamage method on the player
-    //    }
-    //}
+    private void OnCollisionTrigger(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            collision.gameObject.GetComponent<PlayerController>().TakeDamage(damage);
+        }
+    }
 
 
     public void Attacking()
@@ -141,15 +142,4 @@ public class NewEnemyAI : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, InSight);
     }
-
-
-    /*public void randAction(agentAction action, string targetObject)
-    {
-        switch (action)
-        {
-            case agentAction.sprint://random action here
-                break;
-                // Handle other custom commands
-        }
-    }*/
 }
