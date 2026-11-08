@@ -20,10 +20,10 @@ public class NewEnemyAI : MonoBehaviour
 
 
     public float InSight = 20f;
-    public float InAttack = 3f;
+    public float InAttack = 2.5f;
     private bool AttackRange, SightRange;
-    public float AttackCD = 1f;
-    bool HasAttacked;
+    public float AttackCD = 1.5f;
+    private float HasAttacked;
     private LayerMask whatIsPlayer;
 
     public LayerMask whatIsGround;
@@ -45,7 +45,7 @@ public class NewEnemyAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        OnCollisionTrigger();
+        
         SightRange = Physics.CheckSphere(transform.position, InSight, whatIsPlayer);
         AttackRange = Physics.CheckSphere(transform.position, InAttack, whatIsPlayer);
 
@@ -57,7 +57,7 @@ public class NewEnemyAI : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         agent.speed = 3f;
-        agent.stoppingDistance = 2.5f;
+        agent.stoppingDistance = 2f;
         Player = GameObject.Find("Player").transform;
 
     }
@@ -106,22 +106,59 @@ public class NewEnemyAI : MonoBehaviour
 
     }
 
-    private void OnCollisionTrigger(Collision collision)
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Player"))
+    //    {
+    //        OnCollisionTrigger(collision);
+    //    }
+    //}
+    private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<PlayerController>().TakeDamage(damage);
+            PlayerController player = collision.gameObject.GetComponent<PlayerController>();
+
+            if (player != null)
+            {
+                player.TakeDamage(10);
+            }
         }
     }
+    //private void OnCollisionTrigger(Collision collision)
+    //{
+    //    collision.gameObject.GetComponent<PlayerController>().TakeDamage(damage);
+    //}
 
 
     public void Attacking()
     {
+        if (Player == null) return;
 
+        float distance = Vector3.Distance(transform.position, Player.position);
+
+        if (distance <= InSight)
+        {
+            if (distance <= InAttack)
+            {
+                agent.isStopped = true;
+                if (Time.time >= HasAttacked )
+                {
+                    AttackAgain();
+                    HasAttacked = Time.time + AttackCD;
+
+                }
+            }
+        }
     }
     private void AttackAgain()
     {
-        HasAttacked = false;
+        PlayerController PHealth = Player.GetComponent<PlayerController>();
+
+        if (PHealth != null)
+        {
+            PHealth.TakeDamage(damage);
+        }
     }
 
     public void TakeDamage(int damage)
